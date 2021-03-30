@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+//import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "*",allowCredentials="false",allowedHeaders = "*",methods = {})
+@CrossOrigin(originPatterns = "*",allowCredentials="true",allowedHeaders = "*",methods = {})
 public class LoginController {
 
     @Autowired
@@ -33,11 +33,11 @@ public class LoginController {
     }
 
     @RequestMapping("/auth/login")
-    public JSONObject login(@RequestBody Map<String, Object> map){
-        System.out.println(map);
-        System.out.println("login");
-        TblUserRecord tblUserRecord = loginService.login((String) map.get("username"), (String) map.get("password"));
-        System.out.println(tblUserRecord);
+    public JSONObject login(String username, String password, HttpSession session){
+        System.out.println(username + "-" + password);
+        TblUserRecord tblUserRecord = loginService.login(username, password);
+        tblUserRecord.setToken(tblUserRecord.getUserName());
+        session.setAttribute("userRecord",tblUserRecord);
         Common common = new Common();
         common.setResult(tblUserRecord);
         return JSONObject.parseObject(JSONObject.toJSONString(common));
