@@ -13,5 +13,5 @@ import org.apache.ibatis.annotations.Param;
  * @since 2021-03-27
  */
 public interface TblUserRecordMapper extends BaseMapper<TblUserRecord> {
-    public TblUserRecord login(@Param("username") String username, @Param("password") String password);
+    public TblUserRecord login(@Param("username") String username, @Param("userPassword") String password);
 }

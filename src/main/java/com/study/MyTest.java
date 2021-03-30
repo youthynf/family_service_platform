@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import org.junit.Test;
+
+import java.util.concurrent.atomic.AtomicInteger;
 //import org.junit.jupiter.api.Test;
 
 public class MyTest {
@@ -50,5 +52,50 @@ public class MyTest {
                 .setStrategy(strategyConfig).setPackageInfo(packageConfig);
 
         autoGenerator.execute();
+    }
+
+    @Test
+    public void test() {
+        int i = 1;
+        System.out.println(reverseBits(i));
+    }
+
+    public static int reverseBits(int n) {
+        int ans = 0;
+        for(int i = 0; i < 32 && n > 0; i++) {
+            ans |= (n & 1) << (31 - i);
+            n >>>= 1;
+        }
+        return ans;
+    }
+}
+
+class Foo {
+    private AtomicInteger atomicInteger = new AtomicInteger();
+    private AtomicInteger atomicInteger2 = new AtomicInteger();
+
+    public Foo() {
+
+    }
+
+    public void first(Runnable printFirst) throws InterruptedException {
+
+        // printFirst.run() outputs "first". Do not change or remove this line.
+        printFirst.run();
+        atomicInteger.incrementAndGet();
+    }
+
+    public void second(Runnable printSecond) throws InterruptedException {
+        while(atomicInteger.get() != 1) {
+        }
+        // printSecond.run() outputs "second". Do not change or remove this line.
+        printSecond.run();
+        atomicInteger2.incrementAndGet();
+    }
+
+    public void third(Runnable printThird) throws InterruptedException {
+        while(atomicInteger2.get() != 1) {}
+        // printThird.run() outputs "third". Do not change or remove this line.
+        printThird.run();
     }
 }
