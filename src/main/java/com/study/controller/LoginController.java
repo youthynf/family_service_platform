@@ -60,4 +60,11 @@ public class LoginController {
         Common common = new Common(userInfo);
         return JSONObject.parseObject(JSONObject.toJSONString(common));
     }
+
+    @RequestMapping("/auth/logout")
+    public JSONObject loginOut(HttpSession session) {
+        System.out.println("退出登录");
+        session.invalidate();
+        return JSONObject.parseObject(JSONObject.toJSONString(new Common(null)));
+    }
 }
