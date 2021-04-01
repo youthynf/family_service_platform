@@ -12,6 +12,11 @@ public class Common {
         this.result = result;
     }
 
+    public Common(String message, Object result) {
+        this.message = message;
+        this.result = result;
+    }
+
     public String getMessage() {
         return message;
     }
