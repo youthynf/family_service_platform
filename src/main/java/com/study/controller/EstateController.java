@@ -4,13 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.study.bean.FcBuilding;
 import com.study.bean.FcEstate;
+import com.study.bean.FcUnit;
+import com.study.bean.UnitMessage;
 import com.study.json.Common;
 import com.study.service.EstateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -53,6 +52,27 @@ public class EstateController {
     public JSONObject updateBuilding(FcBuilding fcBuilding) {
         System.out.println(fcBuilding);
         Integer result = estateService.updateBuilding(fcBuilding);
+        if(result == 1) {
+            return JSONObject.parseObject(JSONObject.toJSONString(new Common("保存成功", "1")));
+        } else {
+            return JSONObject.parseObject(JSONObject.toJSONString(new Common("保存失败", "0")));
+        }
+    }
+
+    @RequestMapping("/estate/selectUnit")
+    public JSONObject selectUnit(@RequestBody UnitMessage[] unitMessages) {
+        System.out.println(unitMessages[0]);
+        List<FcUnit> fcUnits = new ArrayList<>();
+        for (UnitMessage unitMessage : unitMessages) {
+            fcUnits.addAll(estateService.selectUnit(unitMessage));
+        }
+        return JSONObject.parseObject(JSONObject.toJSONString(new Common(fcUnits)));
+    }
+
+    @RequestMapping("/estate/updateUnit")
+    public JSONObject updateUnit(FcUnit fcUnit) {
+        System.out.println(fcUnit);
+        Integer result = estateService.updateUnit(fcUnit);
         if(result == 1) {
             return JSONObject.parseObject(JSONObject.toJSONString(new Common("保存成功", "1")));
         } else {
