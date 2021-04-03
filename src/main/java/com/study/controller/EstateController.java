@@ -1,14 +1,19 @@
 package com.study.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.study.bean.FcBuilding;
 import com.study.bean.FcEstate;
 import com.study.json.Common;
 import com.study.service.EstateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,6 +38,25 @@ public class EstateController {
             return JSONObject.parseObject(JSONObject.toJSONString(new Common("房产编码已经存在", "0")));
         } else {
             return JSONObject.parseObject(JSONObject.toJSONString(new Common("插入房产成功", "1")));
+        }
+    }
+
+    @RequestMapping("/estate/selectBuilding")
+    public JSONObject selectBuilding(Integer buildingNumber, String estateCode) {
+        System.out.println(buildingNumber + "-" + estateCode);
+        List<FcBuilding> fcBuildings = new ArrayList<>();
+        fcBuildings = estateService.selectBuilding(buildingNumber, estateCode);
+        return JSONObject.parseObject(JSONObject.toJSONString(new Common(fcBuildings)));
+    }
+
+    @RequestMapping("/estate/updateBuilding")
+    public JSONObject updateBuilding(FcBuilding fcBuilding) {
+        System.out.println(fcBuilding);
+        Integer result = estateService.updateBuilding(fcBuilding);
+        if(result == 1) {
+            return JSONObject.parseObject(JSONObject.toJSONString(new Common("保存成功", "1")));
+        } else {
+            return JSONObject.parseObject(JSONObject.toJSONString(new Common("保存失败", "0")));
         }
     }
 }
