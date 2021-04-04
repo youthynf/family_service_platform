@@ -2,10 +2,8 @@ package com.study.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.study.bean.FcBuilding;
-import com.study.bean.FcEstate;
-import com.study.bean.FcUnit;
-import com.study.bean.UnitMessage;
+import com.study.bean.*;
+import com.study.controller.base.CellMessage;
 import com.study.json.Common;
 import com.study.service.EstateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,5 +76,44 @@ public class EstateController {
         } else {
             return JSONObject.parseObject(JSONObject.toJSONString(new Common("保存失败", "0")));
         }
+    }
+
+    @RequestMapping("/estate/insertCell")
+    public JSONObject insertCell(@RequestBody List<CellMessage> cellMessages) {
+        System.out.println(cellMessages);
+        List<FcCell> fcCells = estateService.insertCells(cellMessages);
+        return JSONObject.parseObject(JSONObject.toJSONString(new Common(fcCells)));
+    }
+
+    @RequestMapping("/estate/updateCell")
+    public JSONObject updateCell(FcCell fcCell) {
+        System.out.println(fcCell);
+        Integer result = estateService.updateCell(fcCell);
+        if(result == 1) {
+            return JSONObject.parseObject(JSONObject.toJSONString(new Common("保存成功", "1")));
+        } else {
+            return JSONObject.parseObject(JSONObject.toJSONString(new Common("保存失败", "0")));
+        }
+    }
+
+    @RequestMapping("/estate/selectBuildingName")
+    public JSONObject selectBuildingName(String estateCode) {
+        System.out.println(estateCode);
+        List<FcBuilding> fcBuildings = estateService.selectBuildingName(estateCode);
+        return JSONObject.parseObject(JSONObject.toJSONString(new Common(fcBuildings)));
+    }
+
+    @RequestMapping("/estate/selectUnitName")
+    public JSONObject selectUnitName(String buildingCode) {
+        System.out.println(buildingCode);
+        List<FcUnit> fcUnits = estateService.selectUnitName(buildingCode);
+        return JSONObject.parseObject(JSONObject.toJSONString(new Common(fcUnits)));
+    }
+
+    @RequestMapping("/estate/selectCell")
+    public JSONObject selectCell(String unitCode) {
+        System.out.println(unitCode);
+        List<FcCell> fcCells = estateService.selectCell(unitCode);
+        return JSONObject.parseObject(JSONObject.toJSONString(new Common(fcCells)));
     }
 }
